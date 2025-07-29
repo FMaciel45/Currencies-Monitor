@@ -1,0 +1,11 @@
+{
+	"name": "currencies-monitor",
+	"description": "Projeto para documentar o meu aprendizado sobre o framework Horse",
+	"version": "1.0.0",
+	"homepage": "",
+	"mainsrc": "./src",
+	"projects": [],
+	"dependencies": {
+		"github.com/hashload/horse": "^3.1.6"
+	}
+}

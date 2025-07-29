@@ -1,0 +1,51 @@
+﻿# ===============================================
+# Delphi - Arquivos ignorados
+# ===============================================
+
+# Binários e executáveis
+*.exe
+*.dll
+*.so
+*.apk
+CurrenciesMonitor.res
+
+# Arquivos de compilação intermediários
+*.dcu
+*.dcp
+*.drc
+*.map
+*.tds
+*.rsm
+*.hpp
+*.o
+*.a
+*.lib
+
+# Arquivos de configuração local (específicos de máquina)
+*.dsk
+*.dproj.local
+*.identcache
+*.tvsconfig
+*.projdata
+*.local
+
+# Pastas de histórico e recuperação
+__history/
+__recovery/
+*.~*
+
+# Dependências do Boss
+/modules/
+boss-lock.json
+
+# Arquivos temporários e de backup
+*.cfg
+*.stat
+*Resource.rc
+*.~*
+
+# Exceção: endpoints.json deve ser versionado
+!/src/Configs/endpoints.json
+
+# Exceção: boss.json deve ser versionado
+!/boss.json
