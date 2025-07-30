@@ -1,4 +1,5 @@
 {
   "coinGecko": "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl",
-  "bcbDolar": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.10813/dados/ultimos/1?formato=json"
+  "bcbDolar": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.10813/dados/ultimos/1?formato=json",
+  "bcbEuro": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21619/dados/ultimos/1?formato=json"
 }

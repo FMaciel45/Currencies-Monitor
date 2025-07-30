@@ -9,7 +9,8 @@ uses
   CoinGeckoService in 'src\Services\CoinGeckoService.pas',
   DollarController in 'src\Controllers\DollarController.pas',
   BCBService in 'src\Services\BCBService.pas',
-  CurrencyRate in 'src\Models\CurrencyRate.pas';
+  CurrencyRate in 'src\Models\CurrencyRate.pas',
+  EuroController in 'src\Controllers\EuroController.pas';
 
 begin
   AppMain.Initialize;
