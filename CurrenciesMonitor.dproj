@@ -170,6 +170,11 @@
         <DCCReference Include="src\Core\AppMain.pas"/>
         <DCCReference Include="src\Controllers\BitcoinController.pas"/>
         <DCCReference Include="src\Services\CoinGeckoService.pas"/>
+        <DCCReference Include="src\Controllers\DollarController.pas"/>
+        <DCCReference Include="src\Services\BCBService.pas">
+            <Form>/CurrencyRate in &apos;src\Models\CurrencyRate.pas&apos;;</Form>
+        </DCCReference>
+        <DCCReference Include="src\Models\CurrencyRate.pas"/>
         <None Include="src\Configs\endpoints.json"/>
         <None Include=".gitignore"/>
         <BuildConfiguration Include="Base">

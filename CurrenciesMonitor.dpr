@@ -6,7 +6,10 @@ uses
   Horse,
   AppMain in 'src\Core\AppMain.pas',
   BitcoinController in 'src\Controllers\BitcoinController.pas',
-  CoinGeckoService in 'src\Services\CoinGeckoService.pas';
+  CoinGeckoService in 'src\Services\CoinGeckoService.pas',
+  DollarController in 'src\Controllers\DollarController.pas',
+  BCBService in 'src\Services\BCBService.pas',
+  CurrencyRate in 'src\Models\CurrencyRate.pas';
 
 begin
   AppMain.Initialize;

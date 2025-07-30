@@ -25,8 +25,8 @@ var
   ConfigPath: string;
   ConfigFile: TStringStream;
   Json: TJSONObject;
+
 begin
-  // Caminho relativo considerando a estrutura do projeto
   ConfigPath := TPath.Combine(ExtractFilePath(ParamStr(0)), '..\..\src\Configs\endpoints.json');
   ConfigPath := TPath.GetFullPath(ConfigPath);
 
@@ -34,6 +34,7 @@ begin
     raise Exception.Create('Arquivo de configuração não encontrado: ' + ConfigPath);
 
   ConfigFile := TStringStream.Create('', TEncoding.UTF8);
+
   try
     ConfigFile.LoadFromFile(ConfigPath);
     Json := TJSONObject.ParseJSONValue(ConfigFile.DataString) as TJSONObject;
@@ -49,6 +50,7 @@ begin
   finally
     ConfigFile.Free;
   end;
+
 end;
 
 class function TCoinGeckoService.GetBitcoinPrice: string;
@@ -58,8 +60,10 @@ var
   Json: TJSONObject;
   Price: Double;
   EndpointUrl: string;
+
 begin
   HttpClient := THTTPClient.Create;
+
   try
     try
       EndpointUrl := GetEndpointFromConfig;
@@ -80,6 +84,7 @@ begin
       on E: Exception do
         Result := Format('{"erro":"%s"}', [E.Message]);
     end;
+
   finally
     HttpClient.Free;
   end;
