@@ -106,6 +106,7 @@ var
 
 begin
   HttpClient := THTTPClient.Create;
+  JsonArray := nil;
 
   try
     try

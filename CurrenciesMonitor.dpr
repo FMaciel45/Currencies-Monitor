@@ -10,7 +10,8 @@ uses
   DollarController in 'src\Controllers\DollarController.pas',
   BCBService in 'src\Services\BCBService.pas',
   CurrencyRate in 'src\Models\CurrencyRate.pas',
-  EuroController in 'src\Controllers\EuroController.pas';
+  EuroController in 'src\Controllers\EuroController.pas',
+  AllCurrenciesController in 'src\Controllers\AllCurrenciesController.pas';
 
 begin
   AppMain.Initialize;
