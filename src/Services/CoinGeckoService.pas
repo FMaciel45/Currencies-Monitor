@@ -45,10 +45,13 @@ begin
     finally
       Json.Free;
     end
+
     else
       raise Exception.Create('Formato inválido no arquivo de configuração');
+
   finally
     ConfigFile.Free;
+
   end;
 
 end;
@@ -74,20 +77,25 @@ begin
       if Assigned(Json) then
       try
         Price := Json.GetValue('bitcoin').GetValue<Double>('brl');
-        Result := Format('{"moeda":"BTC/BRL","valor":%.2f}', [Price]);
+        Result := Format('{"success": true, "data": {"moeda":"BTC/BRL","valor":%.2f}}', [Price]);
       finally
         Json.Free;
       end
+
       else
         Result := '{"erro":"Dados inválidos"}';
+
     except
       on E: Exception do
-        Result := Format('{"erro":"%s"}', [E.Message]);
+        Result := Format('{"success": false, "error": "%s"}', [E.Message]);
+
     end;
 
   finally
     HttpClient.Free;
+
   end;
+
 end;
 
 end.

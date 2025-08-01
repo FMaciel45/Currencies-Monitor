@@ -119,11 +119,11 @@ begin
       JsonItem := JsonArray.Items[0] as TJSONObject;
       Price := JsonItem.GetValue<Double>('valor');
 
-      Result := Format('{"moeda":"%s","valor":%.4f}', [ACurrencyPair, Price]);
+      Result := Format('{"success": true, "data": {"moeda":"%s","valor":%.4f}}', [ACurrencyPair, Price]);
 
     except
       on E: Exception do
-        Result := Format('{"erro":"%s"}', [E.Message]);
+        Result := Format('{"success": false, "error": "%s"}', [E.Message]);
     end;
 
   finally
