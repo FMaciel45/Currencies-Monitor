@@ -28,6 +28,8 @@ CurrenciesMonitor.res
 *.tvsconfig
 *.projdata
 *.local
+*.db-shm
+*.db-wal
 
 # Pastas de histórico e recuperação
 __history/

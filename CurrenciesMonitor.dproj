@@ -61,6 +61,7 @@
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
         <SanitizedProjectName>CurrenciesMonitor</SanitizedProjectName>
         <DCC_UnitSearchPath>modules\.dcp;..\modules\.dcp;modules\.dcu;..\modules\.dcu;modules;..\modules;modules\horse\src;..\modules\horse\src;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <FeatureFilesAdded>SQLite</FeatureFilesAdded>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
         <DCC_UsePackage>fmx;DbxCommonDriver;bindengine;IndyIPCommon;FireDACCommonDriver;IndyProtocols;IndyIPClient;dbxcds;bindcompfmx;ibmonitor;FireDACSqliteDriver;DbxClientDriver;soapmidas;fmxFireDAC;dbexpress;inet;fmxase;dbrtl;CustomIPTransport;DBXInterBaseDriver;IndySystem;ibxbindings;bindcomp;FireDACCommon;IndyCore;RESTBackendComponents;bindcompdbx;rtl;RESTComponents;DBXSqliteDriver;IndyIPServer;dsnapxml;FireDAC;xmlrtl;tethering;ibxpress;dsnap;CloudService;soaprtl;soapserver;FireDACIBDriver;$(DCC_UsePackage)</DCC_UsePackage>
@@ -171,14 +172,14 @@
         <DCCReference Include="src\Controllers\BitcoinController.pas"/>
         <DCCReference Include="src\Services\CoinGeckoService.pas"/>
         <DCCReference Include="src\Controllers\DollarController.pas"/>
-        <DCCReference Include="src\Services\BCBService.pas">
-            <Form>/CurrencyRate in &apos;src\Models\CurrencyRate.pas&apos;;</Form>
-        </DCCReference>
+        <DCCReference Include="src\Services\BCBService.pas"/>
         <DCCReference Include="src\Models\CurrencyRate.pas"/>
         <DCCReference Include="src\Controllers\EuroController.pas"/>
         <DCCReference Include="src\Controllers\AllCurrenciesController.pas"/>
+        <DCCReference Include="src\Database\DatabaseManager.pas"/>
         <None Include="src\Configs\endpoints.json"/>
         <None Include=".gitignore"/>
+        <None Include="src\Configs\currencies.db"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -229,6 +230,12 @@
                 <DeployFile LocalName="Win32\Debug\CurrenciesMonitor.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>CurrenciesMonitor.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="src\Configs\currencies.db" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

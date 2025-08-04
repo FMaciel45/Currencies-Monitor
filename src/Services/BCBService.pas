@@ -3,17 +3,18 @@ unit BCBService;
 interface
 
 uses
-  System.Classes;
+  System.Classes,
+  System.JSON;
 
 type
-  TBCBService  = class
-    class function GetDollarPrice: string;
-    class function GetEuroPrice: string;
+  TBCBService = class
+    class function GetDollarPrice: TJSONObject;
+    class function GetEuroPrice: TJSONObject;
 
   private
     class function GetDollarEndpoint: string;
     class function GetEuroEndpoint: string;
-    class function GetPriceFromEndpoint(const AEndpoint: string; const ACurrencyPair: string): string;
+    class function GetPriceFromEndpoint(const AEndpoint: string; const ACurrencyPair: string): TJSONObject;
   end;
 
 implementation
@@ -21,8 +22,8 @@ implementation
 uses
   System.SysUtils,
   System.Net.HttpClient,
-  System.JSON,
-  System.IOUtils;
+  System.IOUtils, // P/ manipulação de arquivos
+  DatabaseManager; // P/ persistência dos dados
 
 class function TBCBService.GetDollarEndpoint: string;
 var
@@ -31,22 +32,21 @@ var
   Json: TJSONObject;
 
 begin
-  ConfigPath := TPath.Combine(ExtractFilePath(ParamStr(0)), '..\..\src\Configs\endpoints.json');
+  ConfigPath := TPath.Combine(ExtractFilePath(ParamStr(0)), '..\..\src\Configs\endpoints.json'); // caminho p/ o arquivo de configuração
   ConfigPath := TPath.GetFullPath(ConfigPath);
 
-  if not FileExists(ConfigPath) then
+  if not FileExists(ConfigPath) then  // Verifica existência do arquivo
     raise Exception.Create('Arquivo de configuração não encontrado: ' + ConfigPath);
 
   ConfigFile := TStringStream.Create('', TEncoding.UTF8);
 
-  try
+  try // Carrega e parseia JSON
     ConfigFile.LoadFromFile(ConfigPath);
     Json := TJSONObject.ParseJSONValue(ConfigFile.DataString) as TJSONObject;
 
     if Assigned(Json) then
-
     try
-      Result := Json.GetValue<string>('bcbDolar');
+      Result := Json.GetValue<string>('bcbDolar'); // Extrai endpoint específico
     finally
       Json.Free;
     end
@@ -67,22 +67,21 @@ var
   Json: TJSONObject;
 
 begin
-  ConfigPath := TPath.Combine(ExtractFilePath(ParamStr(0)), '..\..\src\Configs\endpoints.json');
+  ConfigPath := TPath.Combine(ExtractFilePath(ParamStr(0)), '..\..\src\Configs\endpoints.json'); // caminho p/ o arquivo de configuração
   ConfigPath := TPath.GetFullPath(ConfigPath);
 
-  if not FileExists(ConfigPath) then
+  if not FileExists(ConfigPath) then // Verifica existência do arquivo
     raise Exception.Create('Arquivo de configuração não encontrado: ' + ConfigPath);
 
   ConfigFile := TStringStream.Create('', TEncoding.UTF8);
 
-  try
+  try // Carrega e parseia JSON
     ConfigFile.LoadFromFile(ConfigPath);
     Json := TJSONObject.ParseJSONValue(ConfigFile.DataString) as TJSONObject;
 
     if Assigned(Json) then
-
     try
-      Result := Json.GetValue<string>('bcbEuro');
+      Result := Json.GetValue<string>('bcbEuro'); // Extrai endpoint específico
     finally
       Json.Free;
     end
@@ -96,52 +95,76 @@ begin
 
 end;
 
-class function TBCBService.GetPriceFromEndpoint(const AEndpoint: string; const ACurrencyPair: string): string;
+// Método p/ consulta à API
+class function TBCBService.GetPriceFromEndpoint(const AEndpoint: string; const ACurrencyPair: string): TJSONObject;
 var
   HttpClient: THTTPClient;
   Response: IHTTPResponse;
   JsonArray: TJSONArray;
   JsonItem: TJSONObject;
   Price: Double;
+  FormattedPrice: string;
 
 begin
+  Result := TJSONObject.Create;
   HttpClient := THTTPClient.Create;
   JsonArray := nil;
 
   try
     try
-      Response := HttpClient.Get(AEndpoint);
-      JsonArray := TJSONObject.ParseJSONValue(Response.ContentAsString(TEncoding.UTF8)) as TJSONArray;
+      Response := HttpClient.Get(AEndpoint); // Faz a requisição HTTP
+
+      if Response.StatusCode <> 200 then // Verifica status
+        raise Exception.CreateFmt('Erro na API: %d %s', [Response.StatusCode, Response.StatusText]);
+
+      JsonArray := TJSONObject.ParseJSONValue(Response.ContentAsString(TEncoding.UTF8)) as TJSONArray; // Parse da resposta
 
       if not Assigned(JsonArray) or (JsonArray.Count = 0) then
-        Exit('{"erro":"Dados não encontrados"}');
+        raise Exception.Create('Dados não encontrados na resposta da API');
 
+      // Extrai o valor
       JsonItem := JsonArray.Items[0] as TJSONObject;
       Price := JsonItem.GetValue<Double>('valor');
 
-      Result := Format('{"success": true, "data": {"moeda":"%s","valor":%.4f}}', [ACurrencyPair, Price]);
+      FormattedPrice := FormatFloat('0.0000', Price); // Formatação
 
-    except
+      // Persiste no BD
+      TDatabaseManager.SaveCurrencyRate(ACurrencyPair, Price);
+
+      // Constrói o objeto de resposta
+      Result.AddPair('success', TJSONBool.Create(True));
+      Result.AddPair('data', TJSONObject.Create
+        .AddPair('moeda', ACurrencyPair)
+        .AddPair('valor', TJSONNumber.Create(StrToFloat(FormattedPrice))));
+
+    except // Tratamento de erros
       on E: Exception do
-        Result := Format('{"success": false, "error": "%s"}', [E.Message]);
+      begin
+        Result.AddPair('success', TJSONBool.Create(False));
+        Result.AddPair('error', E.Message);
+      end;
+
     end;
 
-  finally
+  finally // Limpeza
     HttpClient.Free;
-
-    if Assigned (JsonArray) then
+    if Assigned(JsonArray) then
       JsonArray.Free;
+
   end;
+
 end;
 
-class function TBCBService.GetDollarPrice: string;
+// Facade p/ cotação do Dólar (fornece uma interface simplificada)
+class function TBCBService.GetDollarPrice: TJSONObject;
 begin
   Result := GetPriceFromEndpoint(GetDollarEndpoint, 'USD/BRL');
 end;
 
-class function TBCBService.GetEuroPrice: string;
+// Facade p/ cotação do Euro (fornece uma interface simplificada)
+class function TBCBService.GetEuroPrice: TJSONObject;
 begin
-  Result := GetPriceFromEndpoint(GeteUROEndpoint, 'EUR/BRL');
+  Result := GetPriceFromEndpoint(GetEuroEndpoint, 'EUR/BRL');
 end;
 
 end.

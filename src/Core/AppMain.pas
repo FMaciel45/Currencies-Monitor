@@ -33,7 +33,7 @@ begin
     begin
       Writeln('API Bitcoin iniciadaem: http://localhost:9000/bitcoin');
       Writeln('API Dólar iniciada em: http://localhost:9000/dol');
-      Writeln('API EURO iniciada em: http://localhost:9000/euro');
+      Writeln('API Euro iniciada em: http://localhost:9000/euro');
       Writeln('API para todas as moedas iniciada em: http://localhost:9000/currencies');
       Readln;
     end);
