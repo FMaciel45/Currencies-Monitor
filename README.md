@@ -5,23 +5,23 @@ O projeto utiliza as tecnologias mencionadas para a criação de APIs RESTful e 
 
 ## Tecnologias Utilizadas
 
-*   `Delphi`: Linguagem de programação e ambiente de desenvolvimento.
-*   `Horse Framework`: Framework para desenvolvimento de APIs RESTful em Delphi.
-*   `FireDAC`: Biblioteca de acesso a dados para conexão com bancos de dados (utilizado com SQLite).
-*   `SQLite`: Banco de dados leve e embarcado para armazenamento local.
-*   `CoinGecko API`: API externa para obtenção de cotações de criptomoedas (ex.: Bitcoin).
-*   `Banco Central do Brasil (BCB) API`: API para obtenção de cotações de moedas fiduciárias (ex.: Dólar e Euro).
+*   **Delphi**: Linguagem de programação e ambiente de desenvolvimento.
+*   **Horse Framework**: Framework para desenvolvimento de APIs RESTful em Delphi.
+*   **FireDAC**: Biblioteca de acesso a dados para conexão com bancos de dados (utilizado com SQLite).
+*   **SQLite**: Banco de dados leve e embarcado para armazenamento local.
+*   **CoinGecko API**: API externa para obtenção de cotações de criptomoedas (ex.: Bitcoin).
+*   **Banco Central do Brasil (BCB) API**: API para obtenção de cotações de moedas fiduciárias (ex.: Dólar e Euro).
 
 ## Estrutura do Projeto
 
 O projeto segue uma estrutura modular, organizada nas seguintes pastas principais dentro de `src`:
 
-*   `Configs`: Contém arquivos de configuração, como `endpoints.json` (para URLs de APIs externas) e `currencies.db` (banco de dados SQLite).
-*   `Controllers`: Define os controladores da API, responsáveis por lidar com as requisições HTTP e orquestrar as operações. Exemplos incluem `BitcoinController.pas`, `DollarController.pas`, `EuroController.pas` e `AllCurrenciesController.pas`.
-*   `Core`: Contém arquivos centrais do aplicativo, como `AppMain.pas` (ponto de entrada da aplicação) e `Globals.pas` (variáveis e funções globais).
-*   `Database`: Gerencia a conexão e operações com o banco de dados, com o arquivo `DatabaseManager.pas`.
-*   `Models`: Define os modelos de dados, como `CurrencyRate.pas`, que representa a estrutura das informações de cotação das moedas.
-*   `Services`: Contém os serviços que interagem com APIs externas para obter os dados das moedas, como `BCBService.pas` (para dados do Banco Central) e `CoinGeckoService.pas` (para dados do CoinGecko).
+*   **Configs**: Contém arquivos de configuração, como `endpoints.json` (para URLs de APIs externas) e `currencies.db` (banco de dados SQLite).
+*   **Controllers**: Define os controladores da API, responsáveis por lidar com as requisições HTTP e orquestrar as operações. Exemplos incluem `BitcoinController.pas`, `DollarController.pas`, `EuroController.pas` e `AllCurrenciesController.pas`.
+*   **Core**: Contém arquivos centrais do aplicativo, como `AppMain.pas` (ponto de entrada da aplicação) e `Globals.pas` (variáveis e funções globais).
+*   **Database**: Gerencia a conexão e operações com o banco de dados, com o arquivo `DatabaseManager.pas`.
+*   **Models**: Define os modelos de dados, como `CurrencyRate.pas`, que representa a estrutura das informações de cotação das moedas.
+*   **Services**: Contém os serviços que interagem com APIs externas para obter os dados das moedas, como `BCBService.pas` (para dados do Banco Central) e `CoinGeckoService.pas` (para dados do CoinGecko).
 
 ## Funcionalidades
 
